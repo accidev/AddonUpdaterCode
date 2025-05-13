@@ -31,6 +31,11 @@ namespace AddonUpdater.Models
 
         public static bool operator ==(GitHub left, GitHub right)
         {
+            if (ReferenceEquals(left, null))
+                return ReferenceEquals(right, null);
+            if (ReferenceEquals(right, null))
+                return false;
+
             return left.Name == right.Name && left.Link == right.Link && left.Directory == right.Directory &&
                 left.Version == right.Version && left.MyVersion == right.MyVersion &&
                 left.Branches == right.Branches && left.Description == right.Description &&
@@ -39,10 +44,49 @@ namespace AddonUpdater.Models
                 left.Regex == right.Regex && 
                 left.Category == right.Category && left.NeedUpdate == right.NeedUpdate &&
                 left.SavedVariables == right.SavedVariables && left.SavedVariablesPerCharacter == right.SavedVariablesPerCharacter &&
-                left.Files.SequenceEqual(right.Files);
+                left.Files?.SequenceEqual(right.Files ?? new List<string>()) == true;
         }
 
-         public static bool operator !=(GitHub left, GitHub right) => !(left == right);
+        public static bool operator !=(GitHub left, GitHub right) => !(left == right);
 
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return this == (GitHub)obj;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 17;
+                hash = hash * 23 + (Name?.GetHashCode() ?? 0);
+                hash = hash * 23 + (Link?.GetHashCode() ?? 0);
+                hash = hash * 23 + (Directory?.GetHashCode() ?? 0);
+                hash = hash * 23 + (Version?.GetHashCode() ?? 0);
+                hash = hash * 23 + (MyVersion?.GetHashCode() ?? 0);
+                hash = hash * 23 + (Branches?.GetHashCode() ?? 0);
+                hash = hash * 23 + (Description?.GetHashCode() ?? 0);
+                hash = hash * 23 + (Author?.GetHashCode() ?? 0);
+                hash = hash * 23 + (GithubLink?.GetHashCode() ?? 0);
+                hash = hash * 23 + (Forum?.GetHashCode() ?? 0);
+                hash = hash * 23 + (BugReport?.GetHashCode() ?? 0);
+                hash = hash * 23 + (Regex?.GetHashCode() ?? 0);
+                hash = hash * 23 + (Category?.GetHashCode() ?? 0);
+                hash = hash * 23 + NeedUpdate.GetHashCode();
+                hash = hash * 23 + SavedVariables.GetHashCode();
+                hash = hash * 23 + SavedVariablesPerCharacter.GetHashCode();
+                if (Files != null)
+                {
+                    foreach (var file in Files)
+                    {
+                        hash = hash * 23 + (file?.GetHashCode() ?? 0);
+                    }
+                }
+                return hash;
+            }
+        }
     }
 }

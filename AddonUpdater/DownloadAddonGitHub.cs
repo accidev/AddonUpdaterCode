@@ -185,7 +185,7 @@ namespace AddonUpdater
                 if (Directory.Exists(path))
                     directory.Delete(true);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // if (Directory.Exists(path))
                 //  DirectoryDelete(path);
@@ -211,7 +211,7 @@ namespace AddonUpdater
                         if (Directory.Exists(sourceDirectory))
                             Directory.Move(sourceDirectory, destinationDirectory);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // MessageBox.Show(ex.ToString(), "Предупреждение");
                 }
@@ -263,7 +263,7 @@ namespace AddonUpdater
                     return "0";
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //MessageBox.Show(ex.ToString());
             }
@@ -369,7 +369,7 @@ namespace AddonUpdater
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //MessageBox.Show(ex.ToString());
             }
@@ -396,7 +396,7 @@ namespace AddonUpdater
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //MessageBox.Show(ex.ToString());
             }
@@ -414,7 +414,7 @@ namespace AddonUpdater
                 StreamReader reader = new(stream);
                 result = reader.ReadToEnd();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //MessageBox.Show("Ошибка подключения, повторите попытку позже", "Ошибка");
                 // Application.Exit();

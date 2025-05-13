@@ -43,7 +43,7 @@ jobs:
       run: dotnet publish -p:SelfContained=false -p:PublishSingleFile=true --configuration Release --output ./AddonUpdater
 
     - name: Zip project
-      run: Compress-Archive -Path "./AddonUpdater/AddonUpdater.exe","./AddonUpdater/Update.exe","./LICENSE","./README.md" -DestinationPath AddonUpdater.zip
+      run: Compress-Archive -Path "./AddonUpdater/AddonUpdater.exe","./LICENSE","./README.md" -DestinationPath AddonUpdater.zip
       #run: zip -r "AddonUpdaterEXE" ./AddonUpdaterEXE
 
     - name: Create Release
@@ -70,17 +70,6 @@ jobs:
 
     - name: Upload Release Asset 2
       id: upload-release-asset-2
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./AddonUpdater/Update.exe
-        asset_name: "Update.exe"
-        asset_content_type: application/zip
-
-    - name: Upload Release Asset 3
-      id: upload-release-asset-3
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
