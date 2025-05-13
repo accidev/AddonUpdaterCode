@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // набор атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // общие сведения об этой сборке.
 [assembly: AssemblyTitle("AddonUpdater")]
-[assembly: AssemblyDescription("https://github.com/Mr-Dan/")]
+[assembly: AssemblyDescription("https://github.com/accidev/")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("AddonUpdater")]
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Номер сборки
 //      Номер редакции
 //
-[assembly: AssemblyVersion("1.44")]
-[assembly: AssemblyFileVersion("1.44")]
+[assembly: AssemblyVersion("1.45")]
+[assembly: AssemblyFileVersion("1.45")]
