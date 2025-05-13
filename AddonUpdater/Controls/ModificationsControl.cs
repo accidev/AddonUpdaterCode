@@ -27,6 +27,8 @@ namespace AddonUpdater.Controls
             formMainMenu = owner;
             InitializeComponent();
             ComboBoxWTF.Text = AddonUpdaterSettingApp.SettingsApp.BackupWTF;
+            pictureBoxPatch.BackgroundImage = Properties.Resources.PatchX;
+            UpdatePatchStatus();
         }
 
 
@@ -59,6 +61,46 @@ namespace AddonUpdater.Controls
             else
             {
                 MessageBox.Show("Не найдена папка с WTF");
+            }
+        }
+
+        private async void BtnInstallPatch_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(AddonUpdaterSettingApp.SettingsApp.PathWow))
+            {
+                MessageBox.Show("Не указан путь к игре в настройках", "Ошибка");
+                return;
+            }
+
+            btnInstallPatch.Enabled = false;
+            btnInstallPatch.Text = "Устанавливается...";
+            lblPatchStatus.Text = "Статус: Установка...";
+
+            await AnimationPatch.InstallPatchTask();
+            
+            UpdatePatchStatus();
+            btnInstallPatch.Text = "Установить патч";
+            btnInstallPatch.Enabled = true;
+        }
+
+        private void UpdatePatchStatus()
+        {
+            if (string.IsNullOrEmpty(AddonUpdaterSettingApp.SettingsApp.PathWow))
+            {
+                lblPatchStatus.Text = "Статус: Не указан путь к игре";
+                return;
+            }
+
+            if (AnimationPatch.IsPatchInstalled())
+            {
+                DateTime installDate = AnimationPatch.GetPatchInstallationDate();
+                lblPatchStatus.Text = $"Статус: Установлен\nДата: {installDate.ToString("dd.MM.yyyy HH:mm")}";
+                btnInstallPatch.Text = "Переустановить патч";
+            }
+            else
+            {
+                lblPatchStatus.Text = "Статус: Не установлен";
+                btnInstallPatch.Text = "Установить патч";
             }
         }
     }

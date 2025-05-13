@@ -50,7 +50,7 @@
     <Content Include="Update.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="17.8.3" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="17.13.9" />
     <PackageReference Include="Microsoft.Build.Tasks.Git" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive; compile</IncludeAssets>
