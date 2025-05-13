@@ -73,9 +73,8 @@ namespace AddonUpdater
                     titleOnlinePanel.Controls.Add(onlineControl);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
             }
         }
 
