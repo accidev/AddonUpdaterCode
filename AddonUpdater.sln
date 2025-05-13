@@ -4,8 +4,6 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddonUpdater", "AddonUpdater\AddonUpdater.csproj", "{96D538A2-BF48-445C-92B0-7CF77C272E17}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Update", "Updater\Update.csproj", "{2FA893DA-9E77-40B0-AF04-60CE46F3168C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,14 +20,6 @@ Global
 		{96D538A2-BF48-445C-92B0-7CF77C272E17}.Release|Any CPU.Build.0 = Release|Any CPU
 		{96D538A2-BF48-445C-92B0-7CF77C272E17}.Release|x86.ActiveCfg = Release|Any CPU
 		{96D538A2-BF48-445C-92B0-7CF77C272E17}.Release|x86.Build.0 = Release|Any CPU
-		{2FA893DA-9E77-40B0-AF04-60CE46F3168C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FA893DA-9E77-40B0-AF04-60CE46F3168C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2FA893DA-9E77-40B0-AF04-60CE46F3168C}.Debug|x86.ActiveCfg = Release|Any CPU
-		{2FA893DA-9E77-40B0-AF04-60CE46F3168C}.Debug|x86.Build.0 = Release|Any CPU
-		{2FA893DA-9E77-40B0-AF04-60CE46F3168C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2FA893DA-9E77-40B0-AF04-60CE46F3168C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2FA893DA-9E77-40B0-AF04-60CE46F3168C}.Release|x86.ActiveCfg = Release|Any CPU
-		{2FA893DA-9E77-40B0-AF04-60CE46F3168C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

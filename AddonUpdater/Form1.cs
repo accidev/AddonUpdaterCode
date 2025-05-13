@@ -49,7 +49,7 @@ namespace AddonUpdater
             SetStyle(ControlStyles.Selectable, false);
             UpdateStyles();
         }
-       
+
         private async void GetOnline()
         {
             string result;
@@ -286,38 +286,24 @@ namespace AddonUpdater
         {
             await AddonUpdaterSetting.GetSettingsTask();
             LabelVersion.Text = "v." + Application.ProductVersion;
-            if (!Updater.CheckUpdate())
-            {
-                await Updater.DownloadAsync();
-                Application.Exit();
+            
+            PathCheck();
+            GetOnline();
+            await downloadAddonGitHub.AupdatecheckAsync();
+            SetNotificationsAddons();
+            timerGithub.Start();
+            timerLocal.Start();
+            timerUpdate.Start();
+            timerKill.Start();
+            timerSirus.Start();
 
-            }
-            if (AddonUpdaterSetting.Setting.Version == Application.ProductVersion)
-            {
-                PathCheck();
-                GetOnline();
-                await downloadAddonGitHub.AupdatecheckAsync();
-                SetNotificationsAddons();
-                timerGithub.Start();
-                timerLocal.Start();
-                timerUpdate.Start();
-                timerKill.Start();
-                timerSirus.Start();
-
-                VisibleOn();
-                WTF();
-                OpenChildForm(new AddonFormControl(this, true), buttonAddons);
-                AutoUpdate();
-                openFormAddons = true;
-                labelNeedUpdateMyAddon.Parent = buttonAddons;
-                labelNeedUpdateMyAddon.Location = new Point(0, 12);
-            }
-            else
-            {
-                Updater.Run();
-                Application.Exit();
-            }
-
+            VisibleOn();
+            WTF();
+            OpenChildForm(new AddonFormControl(this, true), buttonAddons);
+            AutoUpdate();
+            openFormAddons = true;
+            labelNeedUpdateMyAddon.Parent = buttonAddons;
+            labelNeedUpdateMyAddon.Location = new Point(0, 12);
         }
 
         #region MoveForm

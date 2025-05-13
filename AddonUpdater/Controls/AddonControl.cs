@@ -152,7 +152,7 @@ namespace AddonUpdater.Controls
                     addonForm.ButtonOn();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //MessageBox.Show(ex.Message);
                 addonForm.FormMainMenu.labelInfo.Text = "Ошибка подключения";
