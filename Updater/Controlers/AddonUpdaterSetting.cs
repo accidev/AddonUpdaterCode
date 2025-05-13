@@ -35,7 +35,7 @@ namespace AddonUpdater.Controlers
                 Setting = JsonConvert.DeserializeObject<Setting>(result);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //MessageBox.Show("Ошибка подключения, повторите попытку позже", "Ошибка");
                 // Application.Exit();
