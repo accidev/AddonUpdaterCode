@@ -15,18 +15,18 @@ jobs:
 
     - name: Get current date for release
       id: release_date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%m')"
+      run: echo "date=$(Get-Date -Format 'yyyy-MM-dd HH:mm')" >> $env:GITHUB_OUTPUT
 
     - name: Get current date for tag
       id: tag_date
-      run: echo "::set-output name=date::$(date +'%Y%m%d%H%m')"
+      run: echo "date=$(Get-Date -Format 'yyyyMMddHHmm')" >> $env:GITHUB_OUTPUT
 
     - name: Checkout repository
       uses: actions/checkout@v2
 
     - name: Set short sha
       id: vars
-      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      run: echo "sha_short=$(git rev-parse --short HEAD)" >> $env:GITHUB_OUTPUT
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
@@ -40,7 +40,7 @@ jobs:
       run: dotnet build --configuration Release
 
     - name: Publish project
-      run: dotnet publish -p:SelfContained=false -p:PublishSingleFile=true --configuration Release --output ./AddonUpdater
+      run: dotnet publish -p:SelfContained=false -p:PublishSingleFile=true --configuration Release --output ./AddonUpdater -f net8.0-windows
 
     - name: Zip project
       run: Compress-Archive -Path "./AddonUpdater/AddonUpdater.exe","./LICENSE","./README.md" -DestinationPath AddonUpdater.zip
