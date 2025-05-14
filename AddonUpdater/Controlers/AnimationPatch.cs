@@ -85,7 +85,7 @@ namespace AddonUpdater.Controlers
                 }
 
                 string patchPath = GetPatchPath();
-                
+
                 string fileHash = CalculateFileMD5(patchPath);
                 if (string.IsNullOrEmpty(fileHash))
                 {
@@ -154,4 +154,4 @@ namespace AddonUpdater.Controlers
             }
         }
     }
-} 
+}

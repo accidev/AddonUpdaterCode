@@ -31,12 +31,12 @@ namespace AddonUpdater.Controls
             InitializeComponent();
             ComboBoxWTF.Text = AddonUpdaterSettingApp.SettingsApp.BackupWTF;
             pictureBoxPatch.BackgroundImage = Properties.Resources.PatchX;
-            
+
             patchCheckTimer = new Timer();
             patchCheckTimer.Interval = 15 * 60 * 1000; // 15 минут
             patchCheckTimer.Tick += async (s, e) => await CheckPatchStatusAsync();
             patchCheckTimer.Start();
-            
+
             Task.Run(async () => await CheckPatchStatusAsync());
         }
 
@@ -91,7 +91,7 @@ namespace AddonUpdater.Controls
             lblPatchStatus.Text = "Статус: Установка...";
 
             await AnimationPatch.InstallPatchTask();
-            
+
             await CheckPatchStatusAsync();
             btnInstallPatch.Text = "Установить патч";
             btnInstallPatch.Enabled = true;
@@ -109,25 +109,25 @@ namespace AddonUpdater.Controls
             if (AnimationPatch.IsPatchInstalled())
             {
                 DateTime installDate = AnimationPatch.GetPatchInstallationDate();
-                
+
                 if (isPatchUpToDate)
                 {
                     lblPatchStatus.Text = $"Статус: Установлен (актуальный)\nДата: {installDate.ToString("dd.MM.yyyy HH:mm")}";
                     lblPatchStatus.ForeColor = Color.Green;
+                    btnInstallPatch.Text = "Переустановить";
                 }
                 else
                 {
                     lblPatchStatus.Text = $"Статус: Установлен (устаревший)\nДата: {installDate.ToString("dd.MM.yyyy HH:mm")}";
                     lblPatchStatus.ForeColor = Color.Red;
+                    btnInstallPatch.Text = "Обновить";
                 }
-                
-                btnInstallPatch.Text = "Переустановить патч";
             }
             else
             {
                 lblPatchStatus.Text = "Статус: Не установлен";
                 lblPatchStatus.ForeColor = Color.Red;
-                btnInstallPatch.Text = "Установить патч";
+                btnInstallPatch.Text = "Установить";
             }
         }
     }
