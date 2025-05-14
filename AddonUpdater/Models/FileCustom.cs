@@ -8,7 +8,7 @@ namespace AddonUpdater.Models
 {
     class FileCustom
     {
-        public string Path { get; set; }
+        public required string Path { get; set; } = string.Empty;
         public DateTime DateTimeCreate { get; set; }
     }
 }

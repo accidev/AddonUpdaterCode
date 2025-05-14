@@ -15,7 +15,23 @@ namespace AddonUpdater.Controlers
     class AddonUpdaterSetting
     {
 
-        public static Setting Setting = new();
+        public static Setting Setting = new()
+        {
+            DeleteDirectory = new List<string>(),
+            Tocs = new List<Toc>(),
+            News = string.Empty,
+            Files = new List<string>(),
+            ForumLink = string.Empty,
+            GitHubLink = string.Empty,
+            DiscordLink = string.Empty,
+            DonateLink = string.Empty,
+            Contact = string.Empty,
+            Version = string.Empty,
+            VersionUpdate = string.Empty,
+            AddonUpdaterLink = string.Empty,
+            UpdateLink = string.Empty,
+            Thx = string.Empty
+        };
 
         public static Task GetSettingsTask()
         {
@@ -37,7 +53,23 @@ namespace AddonUpdater.Controlers
                 string result = await response.Content.ReadAsStringAsync();
                 if (!string.IsNullOrEmpty(result))
                 {
-                    Setting = JsonConvert.DeserializeObject<Setting>(result) ?? new Setting();
+                    Setting = JsonConvert.DeserializeObject<Setting>(result) ?? new Setting()
+                    {
+                        DeleteDirectory = new List<string>(),
+                        Tocs = new List<Toc>(),
+                        News = string.Empty,
+                        Files = new List<string>(),
+                        ForumLink = string.Empty,
+                        GitHubLink = string.Empty,
+                        DiscordLink = string.Empty,
+                        DonateLink = string.Empty,
+                        Contact = string.Empty,
+                        Version = string.Empty,
+                        VersionUpdate = string.Empty,
+                        AddonUpdaterLink = string.Empty,
+                        UpdateLink = string.Empty,
+                        Thx = string.Empty
+                    };
                 }
             }
             catch (HttpRequestException ex)

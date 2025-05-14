@@ -12,7 +12,17 @@ namespace AddonUpdater.Controlers
 {
     class AddonUpdaterSettingApp
     {
-        public static SettingApp SettingsApp = new();
+        public static SettingApp SettingsApp = new()
+        {
+            PathWow = string.Empty,
+            AutoUpdateBool = false,
+            DescriptionBool = true,
+            LastUpdate = new List<LastUpdateAddon>(),
+            LauncherOpen = false,
+            UpdateAddon = new List<string>(),
+            PathsWow = new List<string>(),
+            BackupWTF = string.Empty
+        };
         
         public static void Save()
         {          

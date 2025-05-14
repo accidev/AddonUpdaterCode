@@ -8,8 +8,8 @@ namespace AddonUpdater.Models
 {
     class LastUpdateAddon
     {
-        public string AddonName { get; set; }
+        public required string AddonName { get; set; } = string.Empty;
 
-        public string LastUpdate { get; set; }
+        public required string LastUpdate { get; set; } = string.Empty;
     }
 }

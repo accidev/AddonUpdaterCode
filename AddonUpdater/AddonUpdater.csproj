@@ -25,10 +25,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
-    <SelfContained>true</SelfContained>
+    <SelfContained>false</SelfContained>
     <PublishSingleFile>true</PublishSingleFile>
-    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
     <DebugType>embedded</DebugType>
+    <ResourceLanguages>en</ResourceLanguages>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>0DE2AD9975CF8898275EA8FF20BE2FEB24FCDC86</ManifestCertificateThumbprint>

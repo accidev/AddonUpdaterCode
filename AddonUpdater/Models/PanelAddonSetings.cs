@@ -7,16 +7,16 @@ using System.Windows.Forms;
 
 namespace AddonUpdater.Models
 {
-    public  class PanelAddonSetings
+    public class PanelAddonSetings
     {
-        public Label Name { get; set; }
-        public Label Author { get; set; }
-        public Label Category { get; set; }
-        public Button Version { get; set; }
-        public Button Delete { get; set; }
-        public ProgressBar ProgressBar { get; set; }
-        public PictureBox Track { get; set; }
+        public int Id { get; set; }
+        public Label Name { get; set; } = null!;
+        public Label Author { get; set; } = null!;
+        public Label Category { get; set; } = null!;
+        public Button Version { get; set; } = null!;
+        public Button Delete { get; set; } = null!;
+        public ProgressBar ProgressBar { get; set; } = null!;
+        public PictureBox Track { get; set; } = null!;
         public int Width { get; set; }
-
     }
 }

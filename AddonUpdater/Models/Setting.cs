@@ -8,59 +8,59 @@ namespace AddonUpdater.Models
 {
     class Setting
     {
-        public List<string> DeleteDirectory { get; set; }
+        public required List<string> DeleteDirectory { get; set; } = new();
 
-        public List<Toc> Tocs { get; set; }
+        public required List<Toc> Tocs { get; set; } = new();
 
-        public string News { get; set; }
+        public required string News { get; set; } = string.Empty;
 
-        public List<string> Files { get; set; }
+        public required List<string> Files { get; set; } = new();
 
-        public string ForumLink { get; set; }
+        public required string ForumLink { get; set; } = string.Empty;
 
-        public string GitHubLink { get; set; }
+        public required string GitHubLink { get; set; } = string.Empty;
 
-        public string DiscordLink { get; set; }
+        public required string DiscordLink { get; set; } = string.Empty;
 
-        public string DonateLink { get; set; }
+        public required string DonateLink { get; set; } = string.Empty;
 
-        public string Contact { get; set; }
+        public required string Contact { get; set; } = string.Empty;
 
-        public string Version { get; set; }
+        public required string Version { get; set; } = string.Empty;
 
-        public string VersionUpdate { get; set; }
+        public required string VersionUpdate { get; set; } = string.Empty;
 
-        public string AddonUpdaterLink { get; set; }
+        public required string AddonUpdaterLink { get; set; } = string.Empty;
 
-        public string UpdateLink { get; set; }
+        public required string UpdateLink { get; set; } = string.Empty;
 
-        public string Thx { get; set; }
+        public required string Thx { get; set; } = string.Empty;
 
     }
 
     class Toc
     {
-        public string Link { get; set; }
-        public string Regex { get; set; }
+        public required string Link { get; set; } = string.Empty;
+        public required string Regex { get; set; } = string.Empty;
 
     }
 
     class SettingApp
     {
-        public string PathWow { get; set; }
+        public required string PathWow { get; set; } = string.Empty;
         public bool AutoUpdateBool { get; set; }
 
         public bool DescriptionBool { get; set; }
 
-        public List<LastUpdateAddon> LastUpdate { get; set; }
+        public required List<LastUpdateAddon> LastUpdate { get; set; } = new();
 
         public bool LauncherOpen { get; set; }
 
-        public List<string> UpdateAddon { get; set; }
+        public required List<string> UpdateAddon { get; set; } = new();
 
-        public List<string> PathsWow { get; set; }
+        public required List<string> PathsWow { get; set; } = new();
 
-        public string BackupWTF { get; set; }
+        public required string BackupWTF { get; set; } = string.Empty;
 
     }
 }

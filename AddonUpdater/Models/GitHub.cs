@@ -9,25 +9,25 @@ namespace AddonUpdater.Models
 {
     public class GitHub
     {
-        public string Name { get; set; } // название аддона
-        public string Link { get; set; } // ссылка на toc
-        public string Directory { get; set; } // /text/text.toc
-        public string Version { get; set; } // Версия общая
-        public string MyVersion { get; set; } // Моя версия
-        public string Branches { get; set; } // Ветка на github
-        public string Description { get; set; } // Описание
-        public string Author { get; set; } // Автор
-        public string GithubLink { get; set; } // Ссылка на github
-        public string Forum { get; set; } // Ссылка на форум
-        public string BugReport { get; set; } // Ссылка на BugReport
-        public string Regex { get; set; } // Регулярное выражение
+        public required string Name { get; set; } = string.Empty; // название аддона
+        public required string Link { get; set; } = string.Empty; // ссылка на toc
+        public required string Directory { get; set; } = string.Empty; // /text/text.toc
+        public required string Version { get; set; } = string.Empty; // Версия общая
+        public required string MyVersion { get; set; } = string.Empty; // Моя версия
+        public required string Branches { get; set; } = string.Empty; // Ветка на github
+        public required string Description { get; set; } = string.Empty; // Описание
+        public required string Author { get; set; } = string.Empty; // Автор
+        public required string GithubLink { get; set; } = string.Empty; // Ссылка на github
+        public required string Forum { get; set; } = string.Empty; // Ссылка на форум
+        public required string BugReport { get; set; } = string.Empty; // Ссылка на BugReport
+        public required string Regex { get; set; } = string.Empty; // Регулярное выражение
        // public string Replace { get; set; } // Замена для регулярного выражения
-        public string Category { get; set; } // Категория
+        public required string Category { get; set; } = string.Empty; // Категория
         public bool NeedUpdate { get; set; } // Нужно обновление
         //public bool DownloadMyAddon { get; set; } // Скачать ?
         public bool SavedVariables { get; set; } // Общие настройки для аддона
         public bool SavedVariablesPerCharacter { get; set; } // Настройки аддона на персонажа
-        public List<string> Files { get; set; } // Файлы
+        public required List<string> Files { get; set; } = new(); // Файлы
 
         public static bool operator ==(GitHub left, GitHub right)
         {
@@ -49,7 +49,7 @@ namespace AddonUpdater.Models
 
         public static bool operator !=(GitHub left, GitHub right) => !(left == right);
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;

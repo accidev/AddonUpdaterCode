@@ -8,9 +8,9 @@ namespace AddonUpdater.Models
 {
     class WTF
     {
-        public string Account { get; set; }
+        public required string Account { get; set; } = string.Empty;
 
-        public List<Realms> Realms { get; set; }
+        public required List<Realms> Realms { get; set; } = new();
 
     }
 }
