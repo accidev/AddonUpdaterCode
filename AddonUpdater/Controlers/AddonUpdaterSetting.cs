@@ -27,19 +27,30 @@ namespace AddonUpdater.Controlers
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
             using HttpClient client = new();
+            client.Timeout = TimeSpan.FromSeconds(10);
+            
             try
             {
-                Stream stream = await client.GetStreamAsync("https://raw.githubusercontent.com/Mr-Dan/AddonUpdaterSettings/main/MainSettings");
-                StreamReader reader = new(stream);
-                string result = reader.ReadToEnd();
-                Setting = JsonConvert.DeserializeObject<Setting>(result);
-
+                var response = await client.GetAsync("https://gist.githubusercontent.com/accidev/7699f8279a4bce54f26c220c0be8be9c/raw/adb1647b01c5146e57fdf41d476e7afde8f276de/AddonUpdaterSettings");
+                response.EnsureSuccessStatusCode();
+                
+                string result = await response.Content.ReadAsStringAsync();
+                if (!string.IsNullOrEmpty(result))
+                {
+                    Setting = JsonConvert.DeserializeObject<Setting>(result) ?? new Setting();
+                }
             }
-            catch (Exception)
+            catch (HttpRequestException ex)
             {
-                //MessageBox.Show("Ошибка подключения, повторите попытку позже", "Ошибка");
-                // Application.Exit();
-                //MessageBox.Show(ex.ToString(), "Предупреждение");
+                Console.WriteLine($"Ошибка HTTP запроса: {ex.Message}");
+            }
+            catch (TaskCanceledException)
+            {
+                Console.WriteLine("Запрос был отменен из-за истечения таймаута");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Произошла ошибка: {ex.Message}");
             }
         }
     }

@@ -22,15 +22,29 @@ namespace AddonUpdater.Controls
     public partial class ModificationsControl : UserControl
     {
         private FormMainMenu formMainMenu;
+        private Timer patchCheckTimer;
+        private bool isPatchUpToDate = false;
+
         public ModificationsControl(FormMainMenu owner)
         {
             formMainMenu = owner;
             InitializeComponent();
             ComboBoxWTF.Text = AddonUpdaterSettingApp.SettingsApp.BackupWTF;
             pictureBoxPatch.BackgroundImage = Properties.Resources.PatchX;
-            UpdatePatchStatus();
+
+            patchCheckTimer = new Timer();
+            patchCheckTimer.Interval = 15 * 60 * 1000; // 15 минут
+            patchCheckTimer.Tick += async (s, e) => await CheckPatchStatusAsync();
+            patchCheckTimer.Start();
+
+            Task.Run(async () => await CheckPatchStatusAsync());
         }
 
+        private async Task CheckPatchStatusAsync()
+        {
+            isPatchUpToDate = await AnimationPatch.IsPatchUpToDateAsync();
+            this.Invoke(new Action(() => UpdatePatchStatus()));
+        }
 
         private async void BtnBackupWTF_Click(object sender, EventArgs e)
         {
@@ -77,8 +91,8 @@ namespace AddonUpdater.Controls
             lblPatchStatus.Text = "Статус: Установка...";
 
             await AnimationPatch.InstallPatchTask();
-            
-            UpdatePatchStatus();
+
+            await CheckPatchStatusAsync();
             btnInstallPatch.Text = "Установить патч";
             btnInstallPatch.Enabled = true;
         }
@@ -88,19 +102,32 @@ namespace AddonUpdater.Controls
             if (string.IsNullOrEmpty(AddonUpdaterSettingApp.SettingsApp.PathWow))
             {
                 lblPatchStatus.Text = "Статус: Не указан путь к игре";
+                lblPatchStatus.ForeColor = Color.Black;
                 return;
             }
 
             if (AnimationPatch.IsPatchInstalled())
             {
                 DateTime installDate = AnimationPatch.GetPatchInstallationDate();
-                lblPatchStatus.Text = $"Статус: Установлен\nДата: {installDate.ToString("dd.MM.yyyy HH:mm")}";
-                btnInstallPatch.Text = "Переустановить патч";
+
+                if (isPatchUpToDate)
+                {
+                    lblPatchStatus.Text = $"Статус: Установлен (актуальный)\nДата: {installDate.ToString("dd.MM.yyyy HH:mm")}";
+                    lblPatchStatus.ForeColor = Color.Green;
+                    btnInstallPatch.Text = "Переустановить";
+                }
+                else
+                {
+                    lblPatchStatus.Text = $"Статус: Установлен (устаревший)\nДата: {installDate.ToString("dd.MM.yyyy HH:mm")}";
+                    lblPatchStatus.ForeColor = Color.Red;
+                    btnInstallPatch.Text = "Обновить";
+                }
             }
             else
             {
                 lblPatchStatus.Text = "Статус: Не установлен";
-                btnInstallPatch.Text = "Установить патч";
+                lblPatchStatus.ForeColor = Color.Red;
+                btnInstallPatch.Text = "Установить";
             }
         }
     }
