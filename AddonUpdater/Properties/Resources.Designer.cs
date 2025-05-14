@@ -7,6 +7,7 @@
 //     повторной генерации кода.
 // </auto-generated>
 //------------------------------------------------------------------------------
+[assembly: System.Runtime.Versioning.SupportedOSPlatform("windows")]
 
 namespace AddonUpdater.Properties {
     using System;
