@@ -18,7 +18,7 @@ namespace AddonUpdater.Controlers
 
     class AnimationPatch
     {
-        private const string PatchUrl = "https://d1st4r.ru/patch/patch-ruRU-[.mpq";
+        private const string PatchUrl = "http://d1st4r.stream/patch/patch-ruRU-[.mpq";
         private const string PatchFileName = "patch-ruRU-[.mpq";
         private const string PatchInfoUrl = "https://api.d1st4r.ru/patchfx";
         private static PatchInfo _currentPatchInfo;
