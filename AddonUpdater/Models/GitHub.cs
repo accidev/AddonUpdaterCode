@@ -13,7 +13,7 @@ namespace AddonUpdater.Models
         public required string Link { get; set; } = string.Empty; // ссылка на toc
         public required string Directory { get; set; } = string.Empty; // /text/text.toc
         public required string Version { get; set; } = string.Empty; // Версия общая
-        public required string MyVersion { get; set; } = string.Empty; // Моя версия
+        public string? MyVersion { get; set; } = string.Empty; // Моя версия (null = аддон не установлен)
         public required string Branches { get; set; } = string.Empty; // Ветка на github
         public required string Description { get; set; } = string.Empty; // Описание
         public required string Author { get; set; } = string.Empty; // Автор

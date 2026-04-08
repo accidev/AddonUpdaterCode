@@ -1,28 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO.Compression;
 using AddonUpdater.Controls;
-using System.Security.Policy;
 using AddonUpdater.Models;
 using Newtonsoft.Json;
-using System.Timers;
-using Newtonsoft.Json.Linq;
-using AddonUpdater.Properties;
 using AddonUpdater.Controlers;
+using AddonUpdater.Utils;
 
 namespace AddonUpdater
 {
@@ -50,16 +41,14 @@ namespace AddonUpdater
             UpdateStyles();
         }
 
-        private async void GetOnline()
+        private async Task GetOnlineAsync()
         {
-            string result;
-            using HttpClient httpClient = new();
             try
             {
-                using Stream stream = await httpClient.GetStreamAsync("https://api.sirus.su/api/server/status");
-                using StreamReader streamReader = new(stream);
-                result = streamReader.ReadToEnd().Replace("\n", "").Trim();
-                List<Realms> json = JsonConvert.DeserializeObject<List<Realms>>(result);
+                string result = await HttpClientProvider.Instance.GetStringAsync("https://api.sirus.su/api/server/status");
+                result = result.Replace("\n", "").Trim();
+                var json = JsonConvert.DeserializeObject<List<Realms>>(result);
+                if (json == null) return;
 
                 for (int i = 0; i < json.Count; i++)
                 {
@@ -69,12 +58,12 @@ namespace AddonUpdater
                         Name = json[i].Name,
                         Width = 200
                     };
-
                     titleOnlinePanel.Controls.Add(onlineControl);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.LogWarning("GetOnline failed", ex);
             }
         }
 
@@ -237,14 +226,13 @@ namespace AddonUpdater
             ButtonOff();
             try
             {
-                if (progressBar1.Visible == false)
+                if (!progressBar1.Visible)
                 {
                     progressBar1.Visible = true;
                     labelInfo.Visible = true;
                 }
                 activity = "обновления";
-                //  DownloadAddonGitHub.NeedUpdate.Clear();
-                List<GitHub> NeedUpdate = DownloadAddonGitHub.GitHubs.FindAll(find => find.NeedUpdate == true);
+                List<GitHub> NeedUpdate = DownloadAddonGitHub.GitHubs.FindAll(find => find.NeedUpdate);
                 if (NeedUpdate.Count > 0)
                 {
                     progressBar1.Value = 0;
@@ -267,15 +255,16 @@ namespace AddonUpdater
                     progressBar1.Value = 0;
                     labelInfo.Text = "";
                     activity = null;
-                    if (openFormAddons == false)
+                    if (!openFormAddons)
                     {
                         progressBar1.Visible = false;
                         labelInfo.Visible = false;
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.LogError("DownloadAddonAuto failed", ex);
                 progressBar1.Value = 0;
                 labelInfo.Text = "Ошибка подключения";
             }
@@ -284,11 +273,23 @@ namespace AddonUpdater
 
         private async void Form1_Load(object sender, EventArgs e)
         {
+            try
+            {
+                await Form1_LoadAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("Form1_Load failed", ex);
+            }
+        }
+
+        private async Task Form1_LoadAsync()
+        {
             await AddonUpdaterSetting.GetSettingsTask();
             LabelVersion.Text = "v." + Application.ProductVersion;
-            
+
             PathCheck();
-            GetOnline();
+            _ = GetOnlineAsync();
             await downloadAddonGitHub.AupdatecheckAsync();
             SetNotificationsAddons();
             timerGithub.Start();
@@ -298,9 +299,9 @@ namespace AddonUpdater
             timerSirus.Start();
 
             VisibleOn();
-            WTF();
+            _ = WTFAsync();
             OpenChildForm(new AddonFormControl(this, true), buttonAddons);
-            AutoUpdate();
+            await AutoUpdateAsync();
             openFormAddons = true;
             labelNeedUpdateMyAddon.Parent = buttonAddons;
             labelNeedUpdateMyAddon.Location = new Point(0, 12);
@@ -443,65 +444,82 @@ namespace AddonUpdater
 
             }
         }
-        bool timer = false;
+        private readonly SemaphoreSlim _checkSemaphore = new(1, 1);
+
         private async void TimerGithub_Tick(object sender, EventArgs e)
         {
-            if (activity == null)
+            if (activity != null) return;
+            if (!await _checkSemaphore.WaitAsync(0)) return;
+            try
             {
-                timer = true;
                 await downloadAddonGitHub.AupdatecheckAsync();
-                timer = false;
             }
+            catch (Exception ex) { Logger.LogError("TimerGithub_Tick failed", ex); }
+            finally { _checkSemaphore.Release(); }
         }
 
         private async void TimerLocal_Tick(object sender, EventArgs e)
         {
-            if (activity == null && timer == false)
+            if (activity != null) return;
+            if (!await _checkSemaphore.WaitAsync(0)) return;
+            try
             {
                 await downloadAddonGitHub.AupdatecheckLocalAsync();
             }
+            catch (Exception ex) { Logger.LogError("TimerLocal_Tick failed", ex); }
+            finally { _checkSemaphore.Release(); }
         }
 
-        private void TimerSirus_Tick(object sender, EventArgs e)
+        private async void TimerSirus_Tick(object sender, EventArgs e)
         {
-            titleOnlinePanel.Controls.Clear();
-            GetOnline();
-        }
-
-
-        private void TimerUpdate_Tick(object sender, EventArgs e)
-        {
-            if (activity == null)
+            try
             {
+                titleOnlinePanel.Controls.Clear();
+                await GetOnlineAsync();
+            }
+            catch (Exception ex) { Logger.LogError("TimerSirus_Tick failed", ex); }
+        }
+
+
+        private async void TimerUpdate_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (activity != null) return;
+
                 SetNotificationsAddons();
                 if (DownloadAddonGitHub.GitHubs.Count > 0)
                 {
                     if (DownloadAddonGitHub.UpdateInfo)
-                    {
                         OpenForm();
 
-                    }
-                    AutoUpdate();
-
+                    await AutoUpdateAsync();
                 }
             }
+            catch (Exception ex) { Logger.LogError("TimerUpdate_Tick failed", ex); }
         }
 
-        private async void AutoUpdate()
+        private async Task AutoUpdateAsync()
         {
-            if (AddonUpdaterSettingApp.SettingsApp.AutoUpdateBool == true && DownloadAddonGitHub.GitHubs.FindAll(addon => addon.NeedUpdate == true).Count > 0)
+            if (AddonUpdaterSettingApp.SettingsApp.AutoUpdateBool != true) return;
+            if (DownloadAddonGitHub.GitHubs.FindAll(addon => addon.NeedUpdate).Count == 0) return;
+
+            if (Directory.Exists(AddonUpdaterSettingApp.SettingsApp.PathWow))
             {
-                if (Directory.Exists(AddonUpdaterSettingApp.SettingsApp.PathWow))
+                activity = "Cкачивания";
+                try
                 {
-                    activity = "Cкачивания";
                     await DownloadAddonAuto();
-                    activity = null;
-                    OpenForm();
                 }
-                else
+                finally
                 {
-                    labelNeedUpdateMyAddon.Visible = false;
+                    activity = null;
                 }
+                OpenForm();
+            }
+            else
+            {
+                labelNeedUpdateMyAddon.Visible = false;
             }
         }
 
@@ -628,89 +646,63 @@ namespace AddonUpdater
         }
         #endregion
 
-        private static async void WTF()
+        private static async Task WTFAsync()
         {
-
-            if (Directory.Exists("BackupWTF"))
+            try
             {
-                if (Directory.GetFiles("BackupWTF").Length > 15)
+                if (Directory.Exists("BackupWTF") && Directory.GetFiles("BackupWTF").Length > 15)
                 {
                     await BackupWTF.DeleteFileBackupTask(15);
                 }
-            }
 
-            string settings = AddonUpdaterSettingApp.SettingsApp.BackupWTF;
+                string settings = AddonUpdaterSettingApp.SettingsApp.BackupWTF;
 
-            if (settings == "")
-            {
-                AddonUpdaterSettingApp.SettingsApp.BackupWTF = "Никогда";
-                AddonUpdaterSettingApp.Save();
+                if (string.IsNullOrEmpty(settings))
+                {
+                    AddonUpdaterSettingApp.SettingsApp.BackupWTF = "Никогда";
+                    AddonUpdaterSettingApp.Save();
+                    return;
+                }
+
+                switch (settings)
+                {
+                    case "При запуске программы":
+                        await BackupWTF.CreateFileBackupTask();
+                        break;
+                    case "Раз в день":
+                        await BackupIfDueAsync(1, useMonth: false);
+                        break;
+                    case "Раз в два дня":
+                        await BackupIfDueAsync(2, useMonth: false);
+                        break;
+                    case "Раз в три дня":
+                        await BackupIfDueAsync(3, useMonth: false);
+                        break;
+                    case "Раз в неделю":
+                        await BackupIfDueAsync(7, useMonth: false);
+                        break;
+                    case "Раз в месяц":
+                        await BackupIfDueAsync(1, useMonth: true);
+                        break;
+                }
             }
-            else if (settings == "При запуске программы")
+            catch (Exception ex)
             {
+                Logger.LogError("WTFAsync failed", ex);
+            }
+        }
+
+        private static async Task BackupIfDueAsync(int threshold, bool useMonth)
+        {
+            DateTime last = BackupWTF.GetLastBackupWtf();
+            if (last == new DateTime()) return;
+
+            int diff = useMonth
+                ? last.Month - DateTime.Now.Month
+                : last.Day - DateTime.Now.Day;
+
+            if (diff == threshold)
                 await BackupWTF.CreateFileBackupTask();
-            }
-            else if (settings == "Раз в день")
-            {
-                DateTime last = BackupWTF.GetLastBackupWtf();
-
-                if (last != new DateTime())
-                {
-                    if (last.Day - DateTime.Now.Day == 1)
-                    {
-                        await BackupWTF.CreateFileBackupTask();
-                    }
-                }
-            }
-            else if (settings == "Раз в два дня")
-            {
-                DateTime last = BackupWTF.GetLastBackupWtf();
-
-                if (last != new DateTime())
-                {
-                    if (last.Day - DateTime.Now.Day == 2)
-                    {
-                        await BackupWTF.CreateFileBackupTask();
-                    }
-                }
-            }
-            else if (settings == "Раз в три дня")
-            {
-                DateTime last = BackupWTF.GetLastBackupWtf();
-
-                if (last != new DateTime())
-                {
-                    if (last.Day - DateTime.Now.Day == 3)
-                    {
-                        await BackupWTF.CreateFileBackupTask();
-                    }
-                }
-            }
-            else if (settings == "Раз в неделю")
-            {
-                DateTime last = BackupWTF.GetLastBackupWtf();
-
-                if (last != new DateTime())
-                {
-                    if (last.Day - DateTime.Now.Day == 7)
-                    {
-                        await BackupWTF.CreateFileBackupTask();
-                    }
-                }
-            }
-            else if (settings == "Раз в месяц")
-            {
-                DateTime last = BackupWTF.GetLastBackupWtf();
-
-                if (last != new DateTime())
-                {
-                    if (last.Month - DateTime.Now.Month == 1)
-                    {
-                        await BackupWTF.CreateFileBackupTask();
-                    }
-                }
-            }
-
         }
     }
 

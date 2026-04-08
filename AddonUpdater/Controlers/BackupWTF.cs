@@ -1,176 +1,145 @@
-﻿using AddonUpdater.Models;
+using AddonUpdater.Models;
+using AddonUpdater.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AddonUpdater.Controlers
 {
     class BackupWTF
     {
+        private const string BackupDir = "BackupWTF";
 
         public static Task CreateFileBackupTask()
-        {
-            return Task.Run(() => CreateFileBackup());
-        }
+            => Task.Run(() => CreateFileBackup());
 
         public static Task DeleteFileBackupTask(DateTime max)
-        {
-            return Task.Run(() => DeleteFileBackup(max));
-        }
+            => Task.Run(() => DeleteFileBackup(max));
 
         public static Task DeleteFileBackupTask(int n)
-        {
-            return Task.Run(() => DeleteFileBackup(n));
-        }
+            => Task.Run(() => DeleteFileBackup(n));
 
         public static Task BackupWtfTask()
-        {
-            return Task.Run(() => BackupWtf());
-        }
+            => Task.Run(() => BackupWtf());
 
         private static void CreateFileBackup()
         {
-
-            string pathWTF = AddonUpdaterSettingApp.SettingsApp.PathWow + "\\WTF";
-            string pathBackupWTF = "BackupWTF\\WTF " + DateTime.Now.ToString("dd MM yyyy HH mm ss") + ".zip";
-
-            if (Directory.Exists("BackupWTF"))
+            try
             {
+                string? baseWow = AddonUpdaterSettingApp.SettingsApp.PathWow;
+                if (string.IsNullOrEmpty(baseWow)) return;
+
+                string pathWTF = WoWPaths.GetWTFPath(baseWow);
+                if (!Directory.Exists(pathWTF)) return;
+
+                Directory.CreateDirectory(BackupDir);
+                string pathBackupWTF = Path.Combine(
+                    BackupDir,
+                    "WTF " + DateTime.Now.ToString("dd MM yyyy HH mm ss") + ".zip");
+
                 ZipFile.CreateFromDirectory(pathWTF, pathBackupWTF);
             }
-            else
+            catch (Exception ex)
             {
-                Directory.CreateDirectory("BackupWTF");
-                ZipFile.CreateFromDirectory(pathWTF, pathBackupWTF);
-
+                Logger.LogError("CreateFileBackup failed", ex);
             }
         }
 
         private static void DeleteFileBackup(DateTime max)
         {
-
-            if (Directory.Exists("BackupWTF"))
+            if (!Directory.Exists(BackupDir)) return;
+            try
             {
-                try
+                foreach (string file in Directory.GetFiles(BackupDir))
                 {
-                    List<string> files = Directory.GetFiles("BackupWTF").ToList();
-
-                    foreach (string file in files)
-                    {
-                        DateTime dateTime = File.GetCreationTime(file);
-                        if (dateTime < max)
-                        {
-                            File.Delete(file);
-
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
+                    if (File.GetCreationTime(file) < max)
+                        File.Delete(file);
                 }
             }
-
+            catch (Exception ex)
+            {
+                Logger.LogError("DeleteFileBackup(DateTime) failed", ex);
+            }
         }
 
-        private static void DeleteFileBackup(int n)
+        private static void DeleteFileBackup(int keepLast)
         {
-
-            if (Directory.Exists("BackupWTF"))
+            if (!Directory.Exists(BackupDir)) return;
+            try
             {
-                try
+                var files = Directory.GetFiles(BackupDir)
+                    .Select(f => new FileCustom { Path = f, DateTimeCreate = File.GetCreationTime(f) })
+                    .OrderBy(f => f.DateTimeCreate)
+                    .ToList();
+
+                int toDelete = files.Count - keepLast;
+                for (int i = 0; i < toDelete; i++)
                 {
-                    List<string> files = Directory.GetFiles("BackupWTF").ToList();
-
-                    List<FileCustom> filesCustom = new();
-                    foreach (string file in files)
-                    {
-                        DateTime dateTime = File.GetCreationTime(file);
-                        filesCustom.Add(new FileCustom() { Path = file, DateTimeCreate = dateTime });
-                    }
-
-                    filesCustom.Sort((left, right) => left.DateTimeCreate.CompareTo(right.DateTimeCreate));
-
-                    for (int i = 0; i < filesCustom.Count - n; i++)
-                    {
-                        File.Delete(filesCustom[i].Path);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
+                    File.Delete(files[i].Path);
                 }
             }
-
+            catch (Exception ex)
+            {
+                Logger.LogError("DeleteFileBackup(int) failed", ex);
+            }
         }
 
         private static void BackupWtf()
         {
-
-            if (Directory.Exists("BackupWTF"))
+            if (!Directory.Exists(BackupDir)) return;
+            try
             {
-                try
+                string latestPath = string.Empty;
+                DateTime max = DateTime.MinValue;
+                foreach (string file in Directory.GetFiles(BackupDir))
                 {
-                    List<string> files = Directory.GetFiles("BackupWTF").ToList();
-
-                    DateTime max = DateTime.MinValue;
-                    string path = "";
-                    foreach (string file in files)
+                    DateTime dt = File.GetCreationTime(file);
+                    if (dt > max)
                     {
-                        DateTime dateTime = File.GetCreationTime(file);
-                        if (dateTime > max)
-                        {
-                            max = dateTime;
-                            path = file;
-
-                        }
-                    }
-                    if (path != "")
-                    {
-                        string pathToWtf = AddonUpdaterSettingApp.SettingsApp.PathWow + "\\WTF";
-
-                        if (Directory.Exists(pathToWtf))
-                        {
-                            Directory.Delete(pathToWtf, true);
-                        }
-                        ZipFile.ExtractToDirectory(path, pathToWtf);
-                        MessageBox.Show(path + " восстановлен");
+                        max = dt;
+                        latestPath = file;
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+
+                if (string.IsNullOrEmpty(latestPath)) return;
+
+                string? baseWow = AddonUpdaterSettingApp.SettingsApp.PathWow;
+                if (string.IsNullOrEmpty(baseWow)) return;
+
+                string pathToWtf = WoWPaths.GetWTFPath(baseWow);
+                if (Directory.Exists(pathToWtf))
+                    Directory.Delete(pathToWtf, true);
+
+                ZipFile.ExtractToDirectory(latestPath, pathToWtf);
+                System.Windows.Forms.MessageBox.Show(latestPath + " восстановлен");
             }
-
+            catch (Exception ex)
+            {
+                Logger.LogError("BackupWtf failed", ex);
+            }
         }
 
         public static DateTime GetLastBackupWtf()
         {
-
-            DateTime dateTime = new();
-            if (Directory.Exists("BackupWTF"))
+            DateTime max = DateTime.MinValue;
+            try
             {
-                List<string> files = Directory.GetFiles("BackupWTF").ToList();
+                if (!Directory.Exists(BackupDir)) return new DateTime();
 
-                DateTime max = DateTime.MinValue;
-                foreach (string file in files)
+                foreach (string file in Directory.GetFiles(BackupDir))
                 {
-                    dateTime = File.GetCreationTime(file);
-                    if (dateTime > max)
-                    {
-                        max = dateTime;
-                    }
+                    DateTime dt = File.GetCreationTime(file);
+                    if (dt > max) max = dt;
                 }
             }
-
-            return dateTime;
+            catch (Exception ex)
+            {
+                Logger.LogWarning("GetLastBackupWtf failed", ex);
+            }
+            return max == DateTime.MinValue ? new DateTime() : max;
         }
-
     }
 }
