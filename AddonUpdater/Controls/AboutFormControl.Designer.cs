@@ -52,78 +52,78 @@
             // 
             // lblThx
             // 
-            lblThx.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            lblThx.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             lblThx.ForeColor = System.Drawing.Color.White;
             lblThx.Location = new System.Drawing.Point(40, 500);
             lblThx.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblThx.Name = "lblThx";
-            lblThx.Size = new System.Drawing.Size(840, 54);
+            lblThx.Size = new System.Drawing.Size(990, 45);
             lblThx.TabIndex = 38;
-            lblThx.Text = "Благодарность за аддоны : Fxpw, Fallafell, Waini, Qb.";
+            lblThx.Text = "Благодарность за аддоны: Accidev, Fxpw, Fallafell, Waini, Qb.";
             // 
             // label5
             // 
-            label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             label5.ForeColor = System.Drawing.Color.White;
-            label5.Location = new System.Drawing.Point(40, 430);
+            label5.Location = new System.Drawing.Point(40, 435);
             label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(327, 54);
+            label5.AutoSize = true;
             label5.TabIndex = 35;
             label5.Text = "Поддержать проект:";
             // 
             // lblContacts
             // 
-            lblContacts.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            lblContacts.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             lblContacts.ForeColor = System.Drawing.Color.White;
-            lblContacts.Location = new System.Drawing.Point(40, 360);
+            lblContacts.Location = new System.Drawing.Point(40, 375);
             lblContacts.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblContacts.Name = "lblContacts";
-            lblContacts.Size = new System.Drawing.Size(840, 54);
+            lblContacts.Size = new System.Drawing.Size(990, 45);
             lblContacts.TabIndex = 32;
-            lblContacts.Text = "Контакты:";
+            lblContacts.Text = "Контакты: Discord/TG: accidev";
             // 
             // lblVersion
             // 
-            lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             lblVersion.ForeColor = System.Drawing.Color.White;
-            lblVersion.Location = new System.Drawing.Point(40, 290);
+            lblVersion.Location = new System.Drawing.Point(40, 320);
             lblVersion.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblVersion.Name = "lblVersion";
-            lblVersion.Size = new System.Drawing.Size(840, 54);
+            lblVersion.Size = new System.Drawing.Size(990, 45);
             lblVersion.TabIndex = 30;
-            lblVersion.Text = "Версия программы:";
+            lblVersion.Text = "Версия программы: 2.0";
             // 
             // lblAuthor
             // 
-            lblAuthor.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            lblAuthor.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             lblAuthor.ForeColor = System.Drawing.Color.White;
-            lblAuthor.Location = new System.Drawing.Point(40, 230);
+            lblAuthor.Location = new System.Drawing.Point(40, 265);
             lblAuthor.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lblAuthor.Name = "lblAuthor";
-            lblAuthor.Size = new System.Drawing.Size(840, 54);
+            lblAuthor.Size = new System.Drawing.Size(990, 45);
             lblAuthor.TabIndex = 29;
-            lblAuthor.Text = "Автор: Дан (Днюша)(Mr-Dan).";
+            lblAuthor.Text = "Автор: Accidev. На основе версии 1.45 от Дан (Днюша)(Mr-Dan).";
             // 
             // label2
             // 
-            label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             label2.ForeColor = System.Drawing.Color.White;
-            label2.Location = new System.Drawing.Point(40, 130);
+            label2.Location = new System.Drawing.Point(40, 160);
             label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(840, 90);
+            label2.Size = new System.Drawing.Size(990, 80);
             label2.TabIndex = 28;
-            label2.Text = "Addon Updater - программа для обновлений аддонов для игры World Of Warcraft.";
+            label2.Text = "Addon Updater - программа для обновления аддонов для Sirus.";
             // 
             // label1
             // 
-            label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             label1.ForeColor = System.Drawing.Color.White;
-            label1.Location = new System.Drawing.Point(270, 40);
+            label1.Location = new System.Drawing.Point(320, 50);
             label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(467, 92);
+            label1.Size = new System.Drawing.Size(430, 80);
             label1.TabIndex = 27;
             label1.Text = "Addon Updater";
             // 
@@ -155,7 +155,7 @@
             // 
             buttonForum.BackColor = System.Drawing.Color.FromArgb(44, 42, 63);
             buttonForum.BackgroundImage = Properties.Resources.logo_sirus;
-            buttonForum.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            buttonForum.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             buttonForum.Cursor = System.Windows.Forms.Cursors.Hand;
             buttonForum.Dock = System.Windows.Forms.DockStyle.Right;
             buttonForum.FlatAppearance.BorderSize = 0;
@@ -183,7 +183,7 @@
             // 
             buttonGitHub.BackColor = System.Drawing.Color.FromArgb(44, 42, 63);
             buttonGitHub.BackgroundImage = (System.Drawing.Image)resources.GetObject("buttonGitHub.BackgroundImage");
-            buttonGitHub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            buttonGitHub.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             buttonGitHub.Cursor = System.Windows.Forms.Cursors.Hand;
             buttonGitHub.Dock = System.Windows.Forms.DockStyle.Right;
             buttonGitHub.FlatAppearance.BorderSize = 0;
@@ -211,7 +211,7 @@
             // 
             buttonDiscord.BackColor = System.Drawing.Color.FromArgb(44, 42, 63);
             buttonDiscord.BackgroundImage = (System.Drawing.Image)resources.GetObject("buttonDiscord.BackgroundImage");
-            buttonDiscord.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            buttonDiscord.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             buttonDiscord.Cursor = System.Windows.Forms.Cursors.Hand;
             buttonDiscord.Dock = System.Windows.Forms.DockStyle.Right;
             buttonDiscord.FlatAppearance.BorderSize = 0;
@@ -244,10 +244,10 @@
             buttonDonate.FlatAppearance.BorderSize = 0;
             buttonDonate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             buttonDonate.ForeColor = System.Drawing.Color.WhiteSmoke;
-            buttonDonate.Location = new System.Drawing.Point(375, 410);
+            buttonDonate.Location = new System.Drawing.Point(285, 420);
             buttonDonate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             buttonDonate.Name = "buttonDonate";
-            buttonDonate.Size = new System.Drawing.Size(79, 76);
+            buttonDonate.Size = new System.Drawing.Size(60, 60);
             buttonDonate.TabIndex = 34;
             buttonDonate.TabStop = false;
             buttonDonate.UseVisualStyleBackColor = false;

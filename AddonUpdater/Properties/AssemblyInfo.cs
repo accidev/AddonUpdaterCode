@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("AddonUpdater")]
-[assembly: AssemblyCopyright("Copyright © Mr-Dan 2023")]
+[assembly: AssemblyCopyright("Copyright © Accidev 2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,6 @@ using System.Runtime.InteropServices;
 //      Номер сборки
 //      Номер редакции
 //
-[assembly: AssemblyVersion("1.46")]
-[assembly: AssemblyFileVersion("1.46")]
+[assembly: AssemblyVersion("2.0")]
+[assembly: AssemblyFileVersion("2.0")]
+[assembly: AssemblyInformationalVersion("2.0")]
